@@ -46,8 +46,8 @@ chmod 600 ~/.msmtprc
 ```
 Usage:
 ```bash
-chmod +x monitor.sh
-./monitor.sh
+chmod +x resource_monitor.sh
+./resource_monitor.sh
 ```
 
 📧 Email Alert Format
