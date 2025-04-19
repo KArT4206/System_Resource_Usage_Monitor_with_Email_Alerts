@@ -1,10 +1,10 @@
-# 🖥️ System Resource Usage Monitor with Email Alerts
+#  System Resource Usage Monitor with Email Alerts
 
 A lightweight Bash script to monitor system resources (CPU, Memory, and Disk usage) and send email alerts when predefined thresholds are exceeded.
 
 ---
 
-## 🚀 Features
+##  Features
 
 - Monitor **CPU**, **Memory**, and **Disk** usage
 - Send **email alerts** when usage exceeds user-defined thresholds
@@ -14,7 +14,7 @@ A lightweight Bash script to monitor system resources (CPU, Memory, and Disk usa
 
 ---
 
-## 📦 Requirements
+##  Requirements
 
 - `bash`
 - `bc`
