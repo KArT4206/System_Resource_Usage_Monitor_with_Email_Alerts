@@ -50,16 +50,16 @@ chmod +x resource_monitor.sh
 ./resource_monitor.sh
 ```
 
-📧 Email Alert Format
+ Email Alert Format
 You will receive an email like:
 ```
 Subject: Alert: Resource Usage Exceeded Threshold
 Warning: The usage of Memory (85%) has exceeded the threshold of 80%.
 ```
 
-📌 License
+ License
 This project is open-source and available under the MIT License.
 
-👨‍💻 Author
+ Author
 Karthik B – GitHub
 
