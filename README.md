@@ -60,3 +60,5 @@ Warning: The usage of Memory (85%) has exceeded the threshold of 80%.
  Author
 Karthik B – GitHub
 
+
+GPL-3.0 license
