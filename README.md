@@ -1,64 +1,47 @@
-#  System Resource Usage Monitor with Email Alerts
+# System Resource Usage Monitor with Email Alerts
 
-A lightweight Bash script to monitor system resources (CPU, Memory, and Disk usage) and send email alerts when predefined thresholds are exceeded.
+A lightweight Bash tool that checks **CPU, disk and memory usage** on a Linux machine and sends an **email alert** whenever a usage figure goes above a threshold you choose.
 
----
+> This repository documents the project (description, design, screenshots). The script itself lives in a private repository.
 
-##  Features
+## Screenshots
 
-- Monitor **CPU**, **Memory**, and **Disk** usage
-- Send **email alerts** when usage exceeds user-defined thresholds
-- Simple command-line interface
-- Compatible with Linux systems
-- Uses `msmtp` for email delivery
+**Thresholds exceeded: an alert is "sent" for each metric over its limit**
 
----
+![Alerts](docs/images/threshold-exceeded.png)
 
-##  Requirements
+**All metrics under their thresholds: no mail**
 
-- `bash`
-- `bc`
-- `awk`, `sed`, `free`, `top`, `df` (preinstalled in most Linux distros)
-- `msmtp` (for sending emails)
+![Healthy](docs/images/all-healthy.png)
 
-Install `msmtp`:
+_Captured on macOS, where `top`/`free` do not exist in their Linux form, using tiny shims that print real macOS readings in Linux format and a stub `msmtp` that prints the email instead of sending it. On Linux the script calls the real tools and `msmtp`._
 
-```bash
-sudo apt install msmtp
+## Features
+- Interactive: asks for a CPU, disk and memory threshold (in %) at start.
+- Checks all three metrics in one pass and prints each reading with a verdict.
+- Sends one email per metric over its threshold, with the metric name, current value and limit.
+- Uses [`msmtp`](https://marlam.de/msmtp/) with any SMTP provider (Gmail app password works), so there is no mail server to run.
+- Plain Bash; works well from `cron` for scheduled checks.
+
+## How it works
+1. **Input**: `read -p` collects the three thresholds.
+2. **CPU**: `top -bn1` is parsed to get the idle percentage; usage = `100 - idle`.
+3. **Disk**: `df /` gives the root filesystem's use%.
+4. **Memory**: `free -m` supplies used and total megabytes, converted to a percentage.
+5. **Compare**: each reading is compared with its threshold using `bc -l` (so decimals work).
+6. **Alert**: when over, `send_email` builds a short message (`Warning: The usage of Memory (85%) has exceeded the threshold of 80%.`) and pipes it to `msmtp`.
+
 ```
-create a file at ~/.msmtprc with:
-```bash
-defaults
-auth on
-tls on
-tls_trust_file /etc/ssl/certs/ca-certificates.crt
-account default
-host smtp.gmail.com
-port 587
-from your-email@gmail.com
-user your-email@gmail.com
-password your-app-password
-logfile ~/.msmtp.log
-```
-set permissions:
-```bash
-chmod 600 ~/.msmtprc
-```
-Usage:
-```bash
-chmod +x resource_monitor.sh
-./resource_monitor.sh
+thresholds -> read CPU / Disk / Memory -> compare (bc) -> over limit? -> msmtp -> inbox
 ```
 
- Email Alert Format
-You will receive an email like:
-```
-Subject: Alert: Resource Usage Exceeded Threshold
-Warning: The usage of Memory (85%) has exceeded the threshold of 80%.
-```
+## Requirements
+`bash`, `bc`, `awk`, `sed`, `top`, `free`, `df`, and `msmtp` configured in `~/.msmtprc` (SMTP host, port 587, TLS, user, app password; `chmod 600`).
 
- Author
-Karthik B – GitHub
+## Known limitations
+- The CPU parsing pattern expects an older `top` layout, so on current Linux builds the CPU reading can come out as 100%.
+- The "Memory Usage" figure is computed as `100 - used%`, i.e. it reports free memory, not used memory.
+- Recipient and sender addresses are set inside the script.
 
-
-GPL-3.0 license
+## Author
+Karthik B. Licensed under GPL-3.0.
