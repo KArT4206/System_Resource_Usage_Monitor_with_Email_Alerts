@@ -1,5 +1,8 @@
 # System Resource Usage Monitor with Email Alerts
 
+[![License: GPL-3.0](https://img.shields.io/badge/License-GPL--3.0-blue)](LICENSE)
+![Last commit](https://img.shields.io/github/last-commit/KArT4206/System_Resource_Usage_Monitor_with_Email_Alerts)
+
 A lightweight Bash tool that checks **CPU, disk and memory usage** on a Linux machine and sends an **email alert** whenever a usage figure goes above a threshold you choose.
 
 > This repository documents the project (description, design, screenshots). The script itself lives in a private repository.
